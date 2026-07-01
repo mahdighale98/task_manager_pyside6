@@ -109,6 +109,23 @@ QScrollBar::sub-page {
 """
 
 # =========================
+# Widget style
+# =========================
+style_sidebar = """
+QWidget {
+    border: 1px solid #555555;
+    border-radius: 10px;
+}
+"""
+
+style_content = """
+QWidget {
+    border: 1px solid #555555;
+    border-radius: 10px;
+}
+"""
+
+# =========================
 # Topic label
 # =========================
 style_topic_label = """
@@ -126,6 +143,7 @@ QLabel {
 # =========================
 style_label = """
 QLabel {
+    border: none;
     font-family: "Segoe UI";
     font-size: 16px;
     font-weight: 500;
