@@ -113,15 +113,18 @@ QScrollBar::sub-page {
 # =========================
 style_sidebar = """
 QWidget {
-    border: 1px solid #555555;
-    border-radius: 10px;
+    background-color: #0d1324;
+
+    border: 1px solid #1a2235;
+    border-radius: 14px;
 }
 """
-
 style_content = """
 QWidget {
-    border: 1px solid #555555;
-    border-radius: 10px;
+    background-color: #0e1528;
+
+    border: 1px solid #1a2235;
+    border-radius: 14px;
 }
 """
 
@@ -212,6 +215,35 @@ QMessageBox QLabel#qt_msgbox_label {
     color: #e5e7eb;
 }
 """
+# =========================
+# Primary Button
+# =========================
+style_button_primary = """
+QPushButton {
+    font-family: "Segoe UI";
+    font-size: 15px;
+    font-weight: 700;
+
+    color: #ffffff;
+    background-color: #2563eb;
+
+    padding: 12px 18px;
+    border-radius: 10px;
+    border: none;
+}
+
+QPushButton:hover {
+    background-color: #3b82f6;
+}
+
+QPushButton:pressed {
+    background-color: #1d4ed8;
+}
+
+QPushButton:disabled {
+    opacity: 0.4;
+}
+"""
 
 # =========================
 # Base Button
@@ -229,16 +261,90 @@ QPushButton {
     border-radius: 8px;
     border: 1px solid #1f2937;
 }
-
 QPushButton:hover {
     background-color: #1f2937;
 }
-
 QPushButton:pressed {
     background-color: #0b1220;
 }
-
 QPushButton:disabled {
     color: #6b7280;
+}
+"""
+
+# =========================
+# Form Layout
+# =========================
+style_form = """
+QLabel {
+    background: transparent;
+    border: none;
+
+    color: #e2e8f0;
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+/* Inputs */
+
+QLineEdit,
+QDateEdit,
+QTextEdit {
+    background-color: #131b2e;
+
+    color: #f8fafc;
+
+    border: 1px solid #25324a;
+    border-radius: 12px;
+
+    padding: 10px 14px;
+
+    font-size: 14px;
+}
+
+/* Hover */
+
+QLineEdit:hover,
+QDateEdit:hover,
+QTextEdit:hover {
+    border: 1px solid #334155;
+}
+
+/* Focus */
+
+QLineEdit:focus,
+QDateEdit:focus,
+QTextEdit:focus {
+    border: 1px solid #3b82f6;
+    background-color: #17233c;
+}
+
+/* Description */
+
+QTextEdit {
+    min-height: 120px;
+}
+
+/* Date */
+
+QDateEdit {
+    min-width: 140px;
+}
+
+/* Date buttons */
+
+QDateEdit::up-button,
+QDateEdit::down-button {
+    width: 18px;
+
+    background-color: #e2e8f0;
+
+    border-left: 1px solid #25324a;
+}
+
+QDateEdit::up-button:hover,
+QDateEdit::down-button:hover {
+    background-color: #2563eb;
 }
 """
