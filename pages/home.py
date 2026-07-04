@@ -5,7 +5,7 @@ from styles import (
     style_button,
 )
 
-from content_pages import (
+from pages.content_pages import (
     DashboardPage,
     TasksPage,
     AddTaskPage,

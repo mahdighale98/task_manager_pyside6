@@ -285,9 +285,6 @@ QLabel {
     font-size: 14px;
     font-weight: 600;
 }
-
-/* Inputs */
-
 QLineEdit,
 QDateEdit,
 QTextEdit {
@@ -302,38 +299,23 @@ QTextEdit {
 
     font-size: 14px;
 }
-
-/* Hover */
-
 QLineEdit:hover,
 QDateEdit:hover,
 QTextEdit:hover {
     border: 1px solid #334155;
 }
-
-/* Focus */
-
 QLineEdit:focus,
 QDateEdit:focus,
 QTextEdit:focus {
     border: 1px solid #3b82f6;
     background-color: #17233c;
 }
-
-/* Description */
-
 QTextEdit {
     min-height: 120px;
 }
-
-/* Date */
-
 QDateEdit {
     min-width: 140px;
 }
-
-/* Date buttons */
-
 QDateEdit::up-button,
 QDateEdit::down-button {
     width: 18px;
@@ -342,9 +324,73 @@ QDateEdit::down-button {
 
     border-left: 1px solid #25324a;
 }
-
 QDateEdit::up-button:hover,
 QDateEdit::down-button:hover {
     background-color: #2563eb;
+}
+"""
+
+# =========================
+# Table 
+# =========================
+style_table = """
+TableWidget {
+    background-color: #0b1220;
+    color: #e5e7eb;
+
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+
+    font-family: "Segoe UI";
+    font-size: 14px;
+
+    selection-color: white;
+    gridline-color: transparent;
+}
+QHeaderView::section {
+    background-color: #111827;
+    color: #f9fafb;
+
+    border: none;
+    border-bottom: 1px solid #1f2937;
+    padding: 10px;
+
+    font-weight: 600;
+}
+QTableCornerButton::section {
+    background-color: #111827;
+    border: none;
+}
+QScrollBar:vertical {
+    background: #0f172a;
+    width: 12px;
+    border: none;
+}
+QScrollBar::handle:vertical {
+    background: #374151;
+    border-radius: 6px;
+}
+QScrollBar::handle:vertical:hover {
+    background: #4b5563;
+}
+QScrollBar::add-line:vertical,
+QScrollBar::sub-line:vertical {
+    height: 0px;
+}
+QScrollBar:horizontal {
+    background: #0f172a;
+    height: 12px;
+    border: none;
+}
+QScrollBar::handle:horizontal {
+    background: #374151;
+    border-radius: 6px;
+}
+QScrollBar::handle:horizontal:hover {
+    background: #4b5563;
+}
+QScrollBar::add-line:horizontal,
+QScrollBar::sub-line:horizontal {
+    width: 0px;
 }
 """

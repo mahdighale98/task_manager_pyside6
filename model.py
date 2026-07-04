@@ -37,6 +37,7 @@ class Database:
 
         self._create_table()
 
+
     def _create_table(self):
         """Create tasks table if it does not exist."""
 
@@ -51,6 +52,7 @@ class Database:
             """)
         self.connect.commit()
 
+
     def add_task(self, task: Task):
         """Insert a new task."""
         
@@ -62,22 +64,20 @@ class Database:
         
         self.connect.commit()
 
+
     def show_tasks(self):
         """Return all tasks."""
+
+        self._expired_task()
 
         self.cursor.execute("""
             SELECT * FROM tasks 
             """)
-        
+
         return self.cursor.fetchall()
     
-    def edit_task(
-            self, 
-            task_id: int, 
-            title: str, 
-            description: str, 
-            due_date: str
-    ):
+
+    def edit_task(self, task_id: int, title: str, description: str, due_date: str):
         """Update task information."""
 
         self.cursor.execute("""
@@ -88,6 +88,40 @@ class Database:
         
         self.connect.commit()
 
+
+    def change_status(self, task_id: int):
+
+        self.cursor.execute(""" UPDATE tasks SET status = ? WHERE id = ?""", 
+                ("Done", task_id))
+        
+        self.connect.commit()
+
+
+    def _expired_task(self):
+
+        today = date.today()
+        
+        self.cursor.execute(""" SELECT id, due_date, status FROM tasks""")
+        tasks = self.cursor.fetchall()
+
+        for task_id, due_date, status in tasks:
+            
+            due = date.fromisoformat(due_date)
+
+            if due < today and status != "Done":
+
+                self.cursor.execute("""UPDATE tasks SET status = ? WHERE id =?""",
+                            ("Expired", task_id))
+                
+            elif due >= today and status == "Expired":
+
+                self.cursor.execute("""UPDATE tasks SET status = ? WHERE id =?""",
+                            ("Not done", task_id))                
+
+                
+        self.connect.commit()
+
+        
     def close(self):
         """Close database connection."""
         

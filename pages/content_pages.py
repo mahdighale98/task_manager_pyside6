@@ -4,19 +4,26 @@ from styles import (
     style_content,
     style_label,
     style_button_primary,
-    style_form
+    style_form,
+    style_messagebox,
+    style_table
 )
 
 from PySide6.QtCore import Qt, QDate
+from PySide6.QtGui import QColor, QFont
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QFormLayout,
+    QMessageBox,
     QLabel,
     QPushButton,
     QLineEdit,
     QTextEdit,
-    QDateEdit
+    QDateEdit,
+    QTableWidget,
+    QTableWidgetItem,
+    QHeaderView
 )
 
 
@@ -53,7 +60,9 @@ class TasksPage(QWidget):
 
     def __init__(self, content):
         super().__init__()
+
         self.content = content
+        self.db = Database()
 
         self.setStyleSheet(style_content)
 
@@ -63,15 +72,84 @@ class TasksPage(QWidget):
         self._build()
 
     def _build(self):
-        """Show tasks page UI components."""
+        """Create the page layout and load task data into the table."""
 
         self.base_layout = QVBoxLayout()
         self.setLayout(self.base_layout)
+        
+        self._create_table()
+        self._setup_table_headers()
+        self.load_tasks()
 
-        label_topic = QLabel("Tasks")
-        label_topic.setStyleSheet(style_label)
 
-        self.base_layout.addWidget(label_topic, alignment = Qt.AlignCenter)
+    def _create_table(self):
+        """Initialize the QTableWidget used to display tasks."""
+
+        self.tasks_table = QTableWidget()
+        self.tasks_table.setStyleSheet(style_table)
+        
+        self.tasks_table.setShowGrid(False)
+        self.tasks_table.setSortingEnabled(True)
+
+        self.base_layout.addWidget(self.tasks_table)
+
+    def _setup_table_headers(self):
+        """Configure table headers, column sizing, and visibility settings."""
+
+        self.tasks_table.setColumnCount(5)
+        self.tasks_table.setHorizontalHeaderLabels(["ID", "Title", "Description", "Due date", "Status"])
+
+        self.tasks_table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tasks_table.verticalHeader().setDefaultSectionSize(50)
+        self.tasks_table.setColumnHidden(0, True)
+
+    def load_tasks(self):
+        """Retrieve all tasks from the database and display them in the table."""
+
+        self.tasks_table.setRowCount(0)
+        
+        tasks = self.db.show_tasks()
+
+        for row, tasks in enumerate(tasks):
+
+            self.tasks_table.insertRow(row)
+
+            for column in range(4):
+
+                self.tasks_table.setItem(row, column, self._create_item(tasks[column]))
+                self.tasks_table.setItem(row, 4, self._create_status_item(tasks[4]))
+
+        self.tasks_table.sortItems(3, Qt.AscendingOrder)
+
+    def _create_item(self, status):
+        """Return a centered table item for regular task fields."""
+
+        item = QTableWidgetItem(status)
+        item.setTextAlignment(Qt.AlignCenter)
+
+        return item
+
+    def _create_status_item (self, status):
+        """Return a formatted status cell with colors based on task status."""
+
+        status_item = QTableWidgetItem(status)
+        status_item.setTextAlignment(Qt.AlignCenter)
+        status_item.setForeground(QColor("#000000"))
+
+        font = QFont()
+        font.setPointSize(12)
+        font.setBold(True)
+
+        status_item.setFont(font)
+
+        if status == "Not done":
+            status_item.setBackground(QColor("#eab308"))
+        elif status == "Done":
+            status_item.setBackground(QColor("#16a34a"))
+        else:
+            status_item.setBackground(QColor("#dc2626"))
+
+        return status_item
 
 
 
@@ -89,9 +167,9 @@ class AddTaskPage(QWidget):
         # Register page in the content navigation system
         self.content.register_content("AddTask", self)
 
-        self._build()
+        self._setup_ui()
 
-    def _build(self):
+    def _setup_ui(self):
         """Create task page UI components."""
 
         # Main layout
@@ -125,7 +203,7 @@ class AddTaskPage(QWidget):
         self.base_layout.addWidget(self.btn_save)
 
 
-        self.btn_save.clicked.connect(self._save_task())
+        self.btn_save.clicked.connect(self._save_task)
 
         self.base_layout.setContentsMargins(20, 20, 20, 20)
 
@@ -136,21 +214,48 @@ class AddTaskPage(QWidget):
         description = self.description_box.toPlainText().strip()
         due_date = self.date_box.date().toString("yyyy-MM-dd")
 
-        task = Task(
-            title = title, 
-            description = description, 
-            due_date = due_date
-        )
+        try:
+            task = Task(
+                title = title, 
+                description = description, 
+                due_date = due_date
+            )
 
-        self.db.add_task(task)
-        self._clear_form()
+            self.db.add_task(task)
+
+            self._show_message(
+                "Success",
+                "Task saved successfuly."
+            )
+            self._clear_form()
+
+            task_page = self.content.content_views["Tasks"]
+            task_page.load_tasks()
+
+        except Exception as e:
+
+            self._show_message(
+                "Error",
+                f"failed to save task:\n{str(e)}",
+                QMessageBox.Icon.Warning
+            )
 
     def _clear_form(self):
         """Reset form fields after successful save."""
 
         self.title_box.clear()
         self.description_box.clear()
-        self.date_box.clear()
+
+    def _show_message(self, title: str, text: str, icon = QMessageBox.Icon.Information):
+
+        message = QMessageBox(self)
+        message.setWindowTitle(title)
+        message.setText(text)
+        message.setIcon(icon)
+        message.setStyleSheet(style_messagebox)
+        message.exec()
+
+
 
 
 class EditTaskPage(QWidget):
