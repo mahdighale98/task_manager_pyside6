@@ -14,7 +14,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
 )
 
-from home import HomePage
+from pages.home import HomePage
 
 
 

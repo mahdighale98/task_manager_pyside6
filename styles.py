@@ -394,3 +394,26 @@ QScrollBar::sub-line:horizontal {
     width: 0px;
 }
 """
+# =========================
+# Date & Time Label
+# =========================
+style_datetime_label = """
+QLabel {
+    background-color: #111827;
+
+    color: #cbd5e1;
+
+    font-family: "Segoe UI";
+    font-size: 13px;
+    font-weight: 600;
+
+    border: 1px solid #1f2937;
+    border-radius: 10px;
+
+    padding: 6px 12px;
+}
+QLabel:hover {
+    border: 1px solid #2563eb;
+    color: #ffffff;
+}
+"""

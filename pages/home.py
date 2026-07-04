@@ -1,16 +1,17 @@
+from datetime import datetime
+
 from styles import (
     style_sidebar,
     style_topic_label,
     style_footer_label,
     style_button,
+    style_datetime_label
 )
 
-from pages.content_pages import (
-    DashboardPage,
-    TasksPage,
-    AddTaskPage,
-    EditTaskPage
-)
+from pages.dashboard import DashboardPage
+from pages.add_task_page import AddTaskPage
+from pages.tasks_page import TasksPage
+from pages.edit_task_page import EditTaskPage
 
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
@@ -28,34 +29,76 @@ class HomePage(QWidget):
 
     def __init__(self, app):
         super().__init__()
-        self.app = app
 
+        self.app = app
         self.app.register("Homepage", self)
 
-        self._build()
+        self._setup_layout()
+        self._create_header()
+        self._create_workspace()
+        self._create_footer()
 
-    def _build(self):
+    def _setup_layout(self):
         """Build and arrange all UI components of the homepage."""
 
         self.base_layout = QVBoxLayout()
         self.setLayout(self.base_layout)
 
-        # Header
+    def _create_header(self):
+        "Create the page header containing the title and current date/time."
+
+        self.header_layout = QHBoxLayout()
+        self.header_layout.setSpacing(20)
+
+        self.base_layout.addLayout(self.header_layout)
+
+        self._create_datetime_section()
+        self._label_title_label()
+        
+    def _create_datetime_section(self):
+        """Create the date and time display section."""
+
+        date_widget = QWidget()
+        date_widget.setFixedWidth(250)
+
+        date_layout = QVBoxLayout()
+        date_widget.setLayout(date_layout)
+
+        label_date = QLabel(datetime.now().strftime("%Y-%m-%d   %A"))
+        label_time = QLabel(datetime.now().strftime("%H:%M"))
+
+        label_date.setStyleSheet(style_datetime_label)
+        label_time.setStyleSheet(style_datetime_label)
+
+        date_layout.addWidget(label_date, alignment = Qt.AlignCenter)
+        date_layout.addWidget(label_time, alignment = Qt.AlignCenter)
+
+        self.header_layout.addWidget(date_widget)
+
+    def _label_title_label(self):
+        """Create and display the application title."""
+
         label_topic = QLabel("Task Manager")
         label_topic.setStyleSheet(style_topic_label)
-        self.base_layout.addWidget(label_topic, alignment = Qt.AlignCenter)
         label_topic.setContentsMargins(20, 20, 20, 20)
 
-        # Workspace     
+        self.header_layout.addWidget(label_topic, alignment = Qt.AlignCenter)
+
+    def _create_workspace(self):
+        "Create the central workspace containing the sidebar and the main content area."
+
         self.workspace_layout = QHBoxLayout()
         self.base_layout.addLayout(self.workspace_layout)
 
         self.sidebar = SideBar(self)
         self.content = Content(self)
 
-        # Footer       
+    def _create_footer(self):
+        "Create and display application information in the footer."
+
         label_footer = QLabel("Task manager | V1.0.0")
         label_footer.setStyleSheet(style_footer_label)
+
         self.base_layout.addWidget(label_footer, alignment = Qt.AlignLeft | Qt.AlignBottom)
 
 
