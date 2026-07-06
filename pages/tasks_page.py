@@ -1,10 +1,5 @@
 from model import Task, Database
 
-from styles import (
-    style_content,
-    style_table
-)
-
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QColor, QFont
 from PySide6.QtWidgets import (
@@ -29,8 +24,6 @@ class TasksPage(QWidget):
         self.content = content
         self.db = Database()
 
-        self.setStyleSheet(style_content)
-
         # Register page
         self.content.register_content("Tasks", self)
 
@@ -51,7 +44,6 @@ class TasksPage(QWidget):
         """Initialize the QTableWidget used to display tasks."""
 
         self.tasks_table = QTableWidget()
-        self.tasks_table.setStyleSheet(style_table)
         
         self.tasks_table.setShowGrid(False)
         self.tasks_table.setSortingEnabled(True)

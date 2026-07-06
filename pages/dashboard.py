@@ -1,10 +1,5 @@
 from model import Task, Database
 
-from styles import (
-    style_content,
-    style_label,
-)
-
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import (
     QWidget,
@@ -21,8 +16,6 @@ class DashboardPage(QWidget):
         super().__init__()
         self.content = content
 
-        self.setStyleSheet(style_content)
-
         # Register page
         self.content.register_content("Dashboard", self)
 
@@ -35,6 +28,5 @@ class DashboardPage(QWidget):
         self.setLayout(self.base_layout)
 
         label_topic = QLabel("DashBoard")
-        label_topic.setStyleSheet(style_label)
 
         self.base_layout.addWidget(label_topic, alignment = Qt.AlignCenter)

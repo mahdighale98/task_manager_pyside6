@@ -1,11 +1,5 @@
 from model import Task, Database
 
-from styles import (
-    style_button_primary,
-    style_form,
-    style_messagebox,
-)
-
 from PySide6.QtCore import QDate
 from PySide6.QtWidgets import (
     QWidget,
@@ -29,8 +23,6 @@ class AddTaskPage(QWidget):
 
         self.content = content
         self.db = Database()
-
-        self.setStyleSheet(style_form)
 
         # Register page in the content navigation system
         self.content.register_content("AddTask", self)
@@ -67,7 +59,8 @@ class AddTaskPage(QWidget):
 
         # Save button
         self.btn_save = QPushButton("Save")
-        self.btn_save.setStyleSheet(style_button_primary)
+        self.btn_save.setObjectName("primary")
+        
         self.base_layout.addWidget(self.btn_save)
 
 
@@ -120,5 +113,4 @@ class AddTaskPage(QWidget):
         message.setWindowTitle(title)
         message.setText(text)
         message.setIcon(icon)
-        message.setStyleSheet(style_messagebox)
         message.exec()

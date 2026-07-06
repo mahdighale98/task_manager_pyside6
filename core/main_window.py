@@ -1,7 +1,4 @@
-from styles import (
-    style_window,
-    style_messagebox,
-)
+from styles import DARK_THEME, LIGHT_THEME
 
 from PySide6.QtGui import QIcon, QShortcut, QKeySequence
 from PySide6.QtCore import Qt
@@ -25,7 +22,12 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         self.page_stack = QStackedWidget()
+        self.page_stack.setObjectName("mainArea")
+
         self.setCentralWidget(self.page_stack)
+
+        self.dark_mode = True
+        QApplication.instance().setStyleSheet(DARK_THEME)
 
         # Stores registered application pages
         self.pages = {}
@@ -42,7 +44,6 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("Task Manager")
         self.setWindowIcon(QIcon("resources/icones/TK_icon.ico"))
-        self.setStyleSheet(style_window)
 
     # Keyboard Shortcuts
     def _setup_shortcuts(self):
@@ -84,11 +85,22 @@ class MainWindow(QMainWindow):
 
         menu = self.menuBar()
 
+        action_theme = menu.addAction("Theme")
+        action_theme.triggered.connect(self._toggle_theme)
+
         action_info = menu.addAction("Info")
         action_info.triggered.connect(self._show_info_dialog)
 
         action_exit = menu.addAction("Exit")
         action_exit.triggered.connect(self._show_exit_dialog)
+
+    def _toggle_theme(self):
+        self.dark_mode = not self.dark_mode
+
+        if self.dark_mode:
+            QApplication.instance().setStyleSheet(DARK_THEME)
+        else:
+            QApplication.instance().setStyleSheet(LIGHT_THEME)
 
     def _show_info_dialog(self):
         """Display application information."""
@@ -101,7 +113,6 @@ class MainWindow(QMainWindow):
             "Developed by MahdiGhale98"
         )
         
-        message.setStyleSheet(style_messagebox)
         message.setStandardButtons(QMessageBox.Ok)
 
         message.exec()
@@ -112,8 +123,6 @@ class MainWindow(QMainWindow):
         message = QMessageBox(self)
         message.setWindowTitle("Exit")
         message.setText("Are you sure you want to exit?")
-        
-        message.setStyleSheet(style_messagebox)
 
         message.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         message.setDefaultButton(QMessageBox.No)

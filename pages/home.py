@@ -1,13 +1,5 @@
 from datetime import datetime
 
-from styles import (
-    style_sidebar,
-    style_topic_label,
-    style_footer_label,
-    style_button,
-    style_datetime_label
-)
-
 from pages.dashboard import DashboardPage
 from pages.add_task_page import AddTaskPage
 from pages.tasks_page import TasksPage
@@ -67,8 +59,8 @@ class HomePage(QWidget):
         label_date = QLabel(datetime.now().strftime("%Y-%m-%d   %A"))
         label_time = QLabel(datetime.now().strftime("%H:%M"))
 
-        label_date.setStyleSheet(style_datetime_label)
-        label_time.setStyleSheet(style_datetime_label)
+        label_date.setObjectName("datetime")
+        label_time.setObjectName("datetime")
 
         date_layout.addWidget(label_date, alignment = Qt.AlignCenter)
         date_layout.addWidget(label_time, alignment = Qt.AlignCenter)
@@ -79,7 +71,8 @@ class HomePage(QWidget):
         """Create and display the application title."""
 
         label_topic = QLabel("Task Manager")
-        label_topic.setStyleSheet(style_topic_label)
+        label_topic.setObjectName("title")
+
         label_topic.setContentsMargins(20, 20, 20, 20)
 
         self.header_layout.addWidget(label_topic, alignment = Qt.AlignCenter)
@@ -97,7 +90,7 @@ class HomePage(QWidget):
         "Create and display application information in the footer."
 
         label_footer = QLabel("Task manager | V1.0.0")
-        label_footer.setStyleSheet(style_footer_label)
+        label_footer.setObjectName("footer")
 
         self.base_layout.addWidget(label_footer, alignment = Qt.AlignLeft | Qt.AlignBottom)
 
@@ -108,9 +101,10 @@ class SideBar(QWidget):
 
     def __init__(self, page: HomePage):
         super().__init__()
+
+        self.setObjectName("sidebar")
         self.page = page
 
-        self.setStyleSheet(style_sidebar)
         self.setFixedWidth(250)
 
         # Add sidebar to the workspace area
@@ -144,12 +138,6 @@ class SideBar(QWidget):
             lambda: self.page.content.go_content("EditTask")
         )
 
-        # Apply a unified style to all sidebar buttons
-        btn_dashboard.setStyleSheet(style_button)
-        btn_tasks.setStyleSheet(style_button)
-        btn_add_task.setStyleSheet(style_button)
-        btn_edit_task.setStyleSheet(style_button)
-
         self.base_layout.addStretch()
         self.base_layout.setSpacing(10)
         self.base_layout.setContentsMargins(12, 12, 12, 12)
@@ -161,7 +149,10 @@ class Content(QStackedWidget):
 
     def __init__(self, page: HomePage):
         super().__init__()
+
+        self.setObjectName("content")
         self.page = page
+
         self.page.workspace_layout.addWidget(self)
 
         self.content_views = {}
