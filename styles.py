@@ -217,7 +217,58 @@ QMessageBox QLabel {
 QMessageBox QPushButton {
     min-width: 90px;
 }
+/* ===================== Dashboard Cards ===================== */
+
+QFrame#card {
+    background-color: #111827;
+    border: 1px solid #334155;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+QFrame#card:hover {
+    border: 1px solid #6366F1;
+}
+
+QLabel#cardTitle {
+    font-size: 14px;
+    color: #94A3B8;
+}
+
+QLabel#cardValue {
+    font-size: 28px;
+    font-weight: 700;
+    color: #FFFFFF;
+}
+
+QLabel#taskItem {
+    padding: 6px;
+    border-radius: 8px;
+}
+
+QLabel#taskItem:hover {
+    background-color: #1E293B;
+}
+
+/* ===================== Progress Bar ===================== */
+
+QProgressBar {
+    background-color: #1E293B;
+    border: 1px solid #334155;
+    border-radius: 8px;
+    height: 10px;
+    text-align: center;
+    color: transparent;
+}
+
+QProgressBar::chunk {
+    background-color: #6366F1;
+    border-radius: 8px;
+}
 """
+
+
+
 
 
 LIGHT_THEME = """
@@ -438,5 +489,53 @@ QMessageBox QLabel {
 
 QMessageBox QPushButton {
     min-width: 90px;
+}
+
+/* ===================== Dashboard Cards ===================== */
+
+QFrame#card {
+    background-color: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+QFrame#card:hover {
+    border: 1px solid #6366F1;
+}
+
+QLabel#cardTitle {
+    font-size: 14px;
+    color: #64748B;
+}
+
+QLabel#cardValue {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0F172A;
+}
+
+QLabel#taskItem {
+    padding: 6px;
+    border-radius: 8px;
+}
+
+QLabel#taskItem:hover {
+    background-color: #F1F5F9;
+}
+
+/* ===================== Progress Bar ===================== */
+QProgressBar {
+    background-color: #E2E8F0;
+    border: 1px solid #CBD5E1;
+    border-radius: 8px;
+    height: 10px;
+    text-align: center;
+    color: transparent;
+}
+
+QProgressBar::chunk {
+    background-color: #6366F1;
+    border-radius: 8px;
 }
 """

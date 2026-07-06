@@ -75,6 +75,14 @@ class AddTaskPage(QWidget):
         description = self.description_box.toPlainText().strip()
         due_date = self.date_box.date().toString("yyyy-MM-dd")
 
+        if not title:
+            self._show_message(
+                "Validation Error",
+                "Title cannot be empty",
+                QMessageBox.Icon.Warning
+            )
+            return
+        
         try:
             task = Task(
                 title = title, 
